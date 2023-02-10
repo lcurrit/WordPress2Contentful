@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getAllPagesWithSlugs, getPageBySlug } from "../lib/api";
+import { getAllPagesWithSlugs, getPageBySlug } from "../lib/wordPressApi";
 
 export async function getStaticPaths() {
   const pagesWithSlugs = await getAllPagesWithSlugs();

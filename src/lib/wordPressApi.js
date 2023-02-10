@@ -43,3 +43,36 @@ export async function getPageBySlug(slug) {
   `);
   return data?.page;
 }
+
+export async function getPagePreviews() {
+  const data = await fetchAPI(`
+  {
+    pages(first: 10) {
+      edges {
+        node {
+          slug
+          title
+        }
+      }
+    }
+  }
+  `);
+  return data?.pages;
+}
+
+export async function getPostPreviews() {
+  const data = await fetchAPI(`
+  {
+    posts(first: 6) {
+      edges {
+        node {
+          slug
+          title
+          excerpt
+        }
+      }
+    }
+  }
+  `);
+  return data?.posts;
+}
