@@ -1,4 +1,5 @@
 ---
+import { isValidHttpUrl } from "../lib/helpers";
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 
@@ -9,83 +10,27 @@ const postPreviews = await getPostPreviews();
 ---
 
 <Layout title="Welcome to Astro.">
-  <main>
+  <main class="container mx-auto p-6">
     <h1>Welcome to <span class="text-gradient">Astro</span></h1>
     <p class="instructions">
-      To get started, open the directory <code>src/pages</code> in your project.<br
-      />
-      <strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
+      Using Astro to pull data via <code>GraphQL</code> from both <code
+        >WordPress</code
+      > and <code>Contentful</code>.<br />
     </p>
     <ul role="list" class="link-card-grid">
       {
         postPreviews.map((post) => {
           return (
-            <Card href={post.slug} title={post.title} body={post.excerpt} />
+            <Card
+              href={
+                isValidHttpUrl(post.slug) ? post.slug : `/posts/${post.slug}`
+              }
+              title={post.title}
+              body={post.excerpt}
+            />
           );
         })
       }
     </ul>
   </main>
 </Layout>
-
-<style>
-  :root {
-    --accent: 124, 58, 237;
-    --accent-gradient: linear-gradient(
-      45deg,
-      rgb(var(--accent)),
-      #da62c4 30%,
-      white 60%
-    );
-  }
-  html {
-    font-family: system-ui, sans-serif;
-    background-color: #f6f6f6;
-  }
-  code {
-    font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-  }
-  main {
-    margin: auto;
-    padding: 1.5rem;
-    max-width: 60ch;
-  }
-  h1 {
-    font-size: 3rem;
-    font-weight: 800;
-    margin: 0;
-  }
-  .text-gradient {
-    background-image: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 400%;
-    background-position: 0%;
-  }
-  .instructions {
-    line-height: 1.6;
-    margin: 1rem 0;
-    border: 1px solid rgba(var(--accent), 25%);
-    background-color: white;
-    padding: 1rem;
-    border-radius: 0.4rem;
-  }
-  .instructions code {
-    font-size: 0.875em;
-    font-weight: bold;
-    background: rgba(var(--accent), 12%);
-    color: rgb(var(--accent));
-    border-radius: 4px;
-    padding: 0.3em 0.45em;
-  }
-  .instructions strong {
-    color: rgb(var(--accent));
-  }
-  .link-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-    gap: 1rem;
-    padding: 0;
-  }
-</style>

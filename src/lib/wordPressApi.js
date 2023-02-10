@@ -17,6 +17,7 @@ async function fetchAPI(query, { variables } = {}) {
   return json.data;
 }
 
+// Pages
 export async function getAllPagesWithSlugs() {
   const data = await fetchAPI(`
   {
@@ -60,6 +61,7 @@ export async function getPagePreviews() {
   return data?.pages;
 }
 
+// Posts
 export async function getPostPreviews() {
   const data = await fetchAPI(`
   {
@@ -69,6 +71,33 @@ export async function getPostPreviews() {
           slug
           title
           excerpt
+        }
+      }
+    }
+  }
+  `);
+  return data?.posts;
+}
+
+export async function getPostBySlug(slug) {
+  const data = await fetchAPI(`
+  {
+    post(id: "${slug}", idType: SLUG) {
+      title
+      content
+    }
+  }
+  `);
+  return data?.post;
+}
+
+export async function getAllPosts() {
+  const data = await fetchAPI(`
+  {
+    posts {
+      edges {
+        node {
+          slug
         }
       }
     }

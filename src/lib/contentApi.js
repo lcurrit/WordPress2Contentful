@@ -1,18 +1,22 @@
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 
-import { getPostPreviews as wordPressPostPreviews } from "./wordPressApi";
-import { getPostPreviews as contentfulPostPreviews } from "./contentfulApi";
+import {
+  getPostPreviews as wpGetPostPreviews,
+  getPostBySlug as wpGetPostBySlug,
+  getAllPosts as wpGetAllPosts,
+} from "./wordPressApi";
+import { getPostPreviews as cGetPostPreviews } from "./contentfulApi";
 import testContent from "./testContent";
 
 export async function getPostPreviews() {
-  const wordPressPreviews = await wordPressPostPreviews();
-  const contentfulPreviews = await contentfulPostPreviews();
+  const wpPreviews = await wpGetPostPreviews();
+  const cPreviews = await cGetPostPreviews();
 
-  const contentObj = [];
+  const previewObj = [];
 
   // Add WordPress to Object
-  wordPressPreviews.edges.map((post) => {
-    contentObj.push({
+  wpPreviews.edges.map((post) => {
+    previewObj.push({
       title: post.node.title,
       excerpt: post.node.excerpt,
       slug: post.node.slug,
@@ -20,8 +24,8 @@ export async function getPostPreviews() {
   });
 
   // Add Contentful to Object
-  contentfulPreviews.postCollection.items.map((post) => {
-    contentObj.push({
+  cPreviews.postCollection.items.map((post) => {
+    previewObj.push({
       title: post.title,
       excerpt: post.excerpt, //documentToHtmlString(post.content.json),
       slug: post.slug,
@@ -30,14 +34,22 @@ export async function getPostPreviews() {
 
   // Add TestContent to Object
   testContent.map((post) => {
-    contentObj.push({
+    previewObj.push({
       title: post.title,
       excerpt: post.body,
       slug: post.href,
     });
   });
 
-  //console.log("contentObj:", contentObj);
+  return previewObj;
+}
 
-  return contentObj;
+export async function getPostBySlug(slug) {
+  const wpPost = await wpGetPostBySlug(slug);
+  return wpPost;
+}
+
+export async function getAllPosts() {
+  const wpPosts = await wpGetAllPosts();
+  return wpPosts;
 }

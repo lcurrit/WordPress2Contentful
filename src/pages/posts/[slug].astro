@@ -1,0 +1,26 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getAllPosts, getPostBySlug } from "../../lib/contentApi";
+
+export async function getStaticPaths() {
+  const allPosts = await getAllPosts();
+  return allPosts.edges.map(({ node }: { node: any }) => {
+    return {
+      params: { slug: node.slug },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug);
+---
+
+<Layout title={post.title}>
+  <a href="/">&larr; Back</a>
+  <div class="flex flex-col p-10">
+    <div class="mb-5 text-4xl font-bold">{post.title}</div>
+    <article class="prose lg:prose-xl">
+      <Fragment set:html={post.content} />
+    </article>
+  </div>
+</Layout>
