@@ -1,4 +1,6 @@
 ---
+import ScrollButton from "../components/ScrollButton";
+
 export interface Props {
   title: string;
 }
@@ -18,5 +20,6 @@ import "../styles/global.css";
   </head>
   <body>
     <slot />
+    <ScrollButton client:only="react" />
   </body>
 </html>

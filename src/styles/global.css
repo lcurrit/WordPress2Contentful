@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    @apply bg-[#f6f6f6];
+  }
+  h1 {
+    @apply text-5xl font-extrabold;
+  }
+}
+
 /* Index */
 :root {
   --accent: 124, 58, 237;
@@ -12,16 +21,10 @@
     white 60%
   );
 }
-html {
-  background-color: #f6f6f6;
-}
-h1 {
-  font-size: 3rem;
-  font-weight: 800;
-  margin: 0;
-}
+
 .text-gradient {
   background-image: var(--accent-gradient);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 400%;
@@ -42,10 +45,4 @@ h1 {
   color: rgb(var(--accent));
   border-radius: 4px;
   padding: 0.3em 0.45em;
-}
-.link-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-  gap: 1rem;
-  padding: 0;
 }

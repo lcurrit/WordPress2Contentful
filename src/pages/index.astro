@@ -13,11 +13,14 @@ const postPreviews = await getPostPreviews();
   <main class="container mx-auto p-6">
     <h1>Welcome to <span class="text-gradient">Astro</span></h1>
     <p class="instructions">
-      Using Astro to pull data via <code>GraphQL</code> from both <code
+      Using Astro to pull data using <code>GraphQL</code> from both <code
         >WordPress</code
-      > and <code>Contentful</code>.<br />
+      > and <code>Contentful</code>.
     </p>
-    <ul role="list" class="link-card-grid">
+    <ul
+      role="list"
+      class="grid grid-cols-[repeat(auto-fit,_minmax(24ch,_1fr))] gap-4"
+    >
       {
         postPreviews.map((post) => {
           return (

@@ -41,7 +41,8 @@ export async function getPostPreviews() {
     });
   });
 
-  return previewObj;
+  // Limit object to first 9.
+  return previewObj.slice(0, 9);
 }
 
 export async function getPostBySlug(slug) {
