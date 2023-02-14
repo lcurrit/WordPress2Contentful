@@ -21,23 +21,6 @@ async function fetchAPI(query = {}) {
   return json.data;
 }
 
-// export async function getPosts() {
-//   const data = await fetchAPI(`
-//   {
-//     postCollection {
-//       items {
-//         title
-//         excerpt
-//         content {
-//           json
-//         }
-//       }
-//     }
-//   }
-//   `);
-//   return data;
-// }
-
 export async function getPostPreviews() {
   const data = await fetchAPI(`
   {

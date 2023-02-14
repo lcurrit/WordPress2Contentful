@@ -7,13 +7,14 @@ export async function getStaticPaths() {
   return allPosts.map((node) => {
     return {
       params: { slug: node.slug },
+      props: { source: node.source },
     };
   });
 }
 
 const { slug } = Astro.params;
-const post = await getPostBySlug(slug);
-console.log("post:", post);
+const { source } = Astro.props;
+const post = await getPostBySlug(slug, source);
 ---
 
 <Layout title={post.title}>

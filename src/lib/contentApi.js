@@ -48,25 +48,32 @@ export async function getPostPreviews() {
     });
   });
 
-  // Limit object to first 9.
   return previewArray.slice(0, 12);
 }
 
-export async function getPostBySlug(slug) {
-  const wpPost = await wpGetPostBySlug(slug);
-  const cPost = await cGetPostBySlug(slug);
+export async function getPostBySlug(slug, source) {
+  switch (source) {
+    case "wordpress":
+      const wpPost = await wpGetPostBySlug(slug);
+      return {
+        title: wpPost.title,
+        content: wpPost.content,
+      };
 
-  // Need better logic here
-  if (wpPost === null) {
-    return {
-      title: cPost.postCollection.items[0].title,
-      content: documentToHtmlString(cPost.postCollection.items[0].content.json),
-    };
-  } else {
-    return {
-      title: wpPost.title,
-      content: wpPost.content,
-    };
+    case "contentful":
+      const cPost = await cGetPostBySlug(slug);
+      return {
+        title: cPost.postCollection.items[0].title,
+        content: documentToHtmlString(
+          cPost.postCollection.items[0].content.json
+        ),
+      };
+
+    default:
+      return {
+        title: "",
+        content: "",
+      };
   }
 }
 
@@ -80,6 +87,7 @@ export async function getAllPosts() {
   wpPosts.edges.map((post) => {
     postsArray.push({
       slug: post.node.slug,
+      source: "wordpress",
     });
   });
 
@@ -87,6 +95,7 @@ export async function getAllPosts() {
   cPosts.postCollection.items.map((post) => {
     postsArray.push({
       slug: post.slug,
+      source: "contentful",
     });
   });
 
