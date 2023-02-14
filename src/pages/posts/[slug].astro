@@ -4,7 +4,7 @@ import { getAllPosts, getPostBySlug } from "../../lib/contentApi";
 
 export async function getStaticPaths() {
   const allPosts = await getAllPosts();
-  return allPosts.edges.map(({ node }: { node: any }) => {
+  return allPosts.map((node) => {
     return {
       params: { slug: node.slug },
     };
@@ -13,6 +13,7 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const post = await getPostBySlug(slug);
+console.log("post:", post);
 ---
 
 <Layout title={post.title}>

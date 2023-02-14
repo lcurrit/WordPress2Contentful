@@ -21,13 +21,44 @@ async function fetchAPI(query = {}) {
   return json.data;
 }
 
-export async function getPosts() {
+// export async function getPosts() {
+//   const data = await fetchAPI(`
+//   {
+//     postCollection {
+//       items {
+//         title
+//         excerpt
+//         content {
+//           json
+//         }
+//       }
+//     }
+//   }
+//   `);
+//   return data;
+// }
+
+export async function getPostPreviews() {
   const data = await fetchAPI(`
   {
     postCollection {
       items {
         title
         excerpt
+        slug
+      }
+    }
+  }
+  `);
+  return data;
+}
+
+export async function getPostBySlug(slug) {
+  const data = await fetchAPI(`
+  {
+    postCollection(where: {slug: "${slug}"} ) {
+      items {
+        title
         content {
           json
         }
@@ -38,13 +69,11 @@ export async function getPosts() {
   return data;
 }
 
-export async function getPostPreviews() {
+export async function getAllPosts() {
   const data = await fetchAPI(`
   {
     postCollection {
       items {
-        title
-        excerpt
         slug
       }
     }
