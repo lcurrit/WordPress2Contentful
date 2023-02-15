@@ -1,5 +1,3 @@
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-
 import {
   getPostPreviews as wpGetPostPreviews,
   getPostBySlug as wpGetPostBySlug,
@@ -63,10 +61,8 @@ export async function getPostBySlug(slug, source) {
     case "contentful":
       const cPost = await cGetPostBySlug(slug);
       return {
-        title: cPost.postCollection.items[0].title,
-        content: documentToHtmlString(
-          cPost.postCollection.items[0].content.json
-        ),
+        title: cPost.title,
+        content: cPost.content,
       };
 
     default:

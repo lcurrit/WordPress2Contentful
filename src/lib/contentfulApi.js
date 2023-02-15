@@ -1,5 +1,10 @@
+import contentful from "contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import { BLOCKS } from "@contentful/rich-text-types";
+
 const API_URL = import.meta.env.CONTENTFUL_API_URL;
 const API_TOKEN = import.meta.env.CONTENTFUL_BEARER_TOKEN;
+const API_SPACE_ID = import.meta.env.CONTENTFUL_SPACE_ID;
 
 async function fetchAPI(query = {}) {
   const headers = {
@@ -21,6 +26,22 @@ async function fetchAPI(query = {}) {
   return json.data;
 }
 
+const client = contentful.createClient({
+  space: API_SPACE_ID,
+  accessToken: API_TOKEN,
+});
+
+const renderOptions = {
+  renderNode: {
+    [BLOCKS.EMBEDDED_ASSET]: ({
+      data: {
+        target: { fields },
+      },
+    }) =>
+      `<img src="${fields.file.url}" height="${fields.file.details.image.height}" width="${fields.file.details.image.width}" alt="${fields.description}"/>`,
+  },
+};
+
 export async function getPostPreviews() {
   const data = await fetchAPI(`
   {
@@ -37,19 +58,37 @@ export async function getPostPreviews() {
 }
 
 export async function getPostBySlug(slug) {
-  const data = await fetchAPI(`
-  {
-    postCollection(where: {slug: "${slug}"} ) {
-      items {
-        title
-        content {
-          json
-        }
-      }
-    }
-  }
-  `);
-  return data;
+  // const data = await fetchAPI(`
+  // {
+  //   postCollection(where: {slug: "${slug}"} ) {
+  //     items {
+  //       title
+  //       content {
+  //         json
+  //       }
+  //     }
+  //   }
+  // }
+  // `);
+  // return data;
+  const post = await client
+    .getEntries({
+      content_type: "post",
+      limit: 1,
+      include: 10,
+      "fields.slug": slug,
+    })
+    .then((entry) => {
+      return {
+        title: entry.items[0].fields.title,
+        content: documentToHtmlString(
+          entry.items[0].fields.content,
+          renderOptions
+        ),
+      };
+    })
+    .catch(console.error);
+  return post;
 }
 
 export async function getAllPosts() {
