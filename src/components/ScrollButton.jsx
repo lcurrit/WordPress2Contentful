@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const ScrollButton = () => {
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener("scroll", toggleVisible);
+    return () => window.removeEventListener("scroll", toggleVisible);
+  }, []);
 
   const toggleVisible = () => {
     const scrolled = document.documentElement.scrollTop;
@@ -18,8 +23,6 @@ const ScrollButton = () => {
       behavior: "smooth",
     });
   };
-
-  window.addEventListener("scroll", toggleVisible);
 
   return (
     <div className="fixed bottom-10 right-10 h-10 w-10">
