@@ -1,0 +1,56 @@
+---
+const { title } = Astro.props;
+const metaDescription =
+  "Using Astro to pull data using GraphQL from both WordPress and Contentful.";
+const metaImage = "https://placedog.net/500/280?id=1";
+const metaUrl = Astro.url;
+const metaDomain = Astro.url.host;
+---
+
+<meta name="description" content={metaDescription} />
+
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content={metaUrl} />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={metaDescription} />
+<meta property="og:image" content={metaImage} />
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain" content={metaDomain} />
+<meta property="twitter:url" content={metaUrl} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={metaDescription} />
+<meta name="twitter:image" content={metaImage} />
+
+<script define:vars={{ metaImage }}>
+  // get href
+  const current_url = new URL(window.location.href);
+
+  // get access to URLSearchParams object
+  const search_params = current_url.searchParams;
+
+  // get url parameters
+  const image_param = search_params.get("image");
+
+  // image switch
+  let image = () => {
+    switch (image_param) {
+      case "strength":
+        return "https://placedog.net/500/280?id=2";
+      case "yoga":
+        return "https://placedog.net/500/280?id=3";
+      default:
+        return metaImage;
+    }
+  };
+
+  // set facebook opengraph image
+  let facebook_image = document.querySelector('[property="og:image"]');
+  facebook_image && facebook_image.setAttribute("content", image());
+
+  // set twittercard image
+  let twitter_image = document.querySelector('[name="twitter:image"]');
+  twitter_image && twitter_image.setAttribute("content", image());
+</script>

@@ -1,3 +1,4 @@
+// Determine if string is an external URL
 export function isValidHttpUrl(string) {
   let url;
   try {
