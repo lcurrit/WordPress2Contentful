@@ -2,18 +2,20 @@
 import Layout from "../../layouts/Layout.astro";
 import { getAllPosts, getPostBySlug } from "../../lib/contentApi";
 
-export async function getStaticPaths() {
-  const allPosts = await getAllPosts();
-  return allPosts.map((node) => {
-    return {
-      params: { slug: node.slug },
-      props: { source: node.source },
-    };
-  });
-}
+
+
+const allPosts = await getAllPosts();
+return allPosts.map((node) => {
+  return {
+    params: { slug: node.slug },
+    props: { source: node.source },
+  };
+});
+
 
 const { slug } = Astro.params;
 const { source } = Astro.props;
+
 const post = await getPostBySlug(slug, source);
 ---
 

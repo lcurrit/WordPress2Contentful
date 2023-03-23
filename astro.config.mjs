@@ -11,4 +11,6 @@ export default defineConfig({
     }),
     react(),
   ],
+  site: "https://96ca-66-172-30-170.ngrok.io",
+  output: "server",
 });

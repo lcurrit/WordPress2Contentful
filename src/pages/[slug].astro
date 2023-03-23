@@ -2,14 +2,14 @@
 import Layout from "../layouts/Layout.astro";
 import { getAllPagesWithSlugs, getPageBySlug } from "../lib/wordPressApi";
 
-export async function getStaticPaths() {
-  const pagesWithSlugs = await getAllPagesWithSlugs();
-  return pagesWithSlugs.edges.map(({ node }: { node: any }) => {
-    return {
-      params: { slug: node.slug },
-    };
-  });
-}
+//export async function getStaticPaths() {
+const pagesWithSlugs = await getAllPagesWithSlugs();
+return pagesWithSlugs.edges.map(({ node }: { node: any }) => {
+  return {
+    params: { slug: node.slug },
+  };
+});
+//}
 
 const { slug } = Astro.params;
 const page = await getPageBySlug(slug);
